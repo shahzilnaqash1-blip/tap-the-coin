@@ -1,0 +1,14 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Tap The Coin – Ultimate Challenge",
+  "orientation": "portrait",
+  "scope": "/tap-the-coin/",
+  "short_name": "Tap The Coin",
+  "start_url": "/tap-the-coin/",
+  "theme_color": "#ffffff",
+  "id": "tap-the-coin",
+  "description": "A fast and fun 30-second coin tapping challenge. Build combos, catch bonus coins, beat your high score and unlock achievements!",
+  "lang": "en"
+}
