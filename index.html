@@ -8,401 +8,502 @@
 
 <style>
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  min-height:100vh;
-  background:linear-gradient(135deg,#141e30,#243b55);
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:15px;
+    font-family:Arial,sans-serif;
+    min-height:100vh;
+    background:linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
 }
 
-.game{
-  width:100%;
-  max-width:500px;
-  text-align:center;
+.container{
+    width:100%;
+    max-width:500px;
 }
 
-h1{
-  margin:5px 0 15px;
-  font-size:32px;
+/* SCREENS */
+.screen{
+    display:none;
 }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-  margin-bottom:10px;
+.screen.active{
+    display:block;
 }
 
-.stat{
-  background:rgba(255,255,255,.12);
-  border-radius:12px;
-  padding:9px 5px;
-  font-size:14px;
-  font-weight:bold;
+/* START SCREEN */
+.start-card{
+    text-align:center;
+    padding:35px 20px;
+    border-radius:28px;
+    background:rgba(255,255,255,.10);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
 }
 
-#gameArea{
-  position:relative;
-  width:100%;
-  height:min(450px,62vh);
-  min-height:330px;
-  margin:10px 0;
-  border-radius:20px;
-  background:rgba(255,255,255,.08);
-  border:2px solid rgba(255,255,255,.2);
-  overflow:hidden;
-  touch-action:manipulation;
+.logo{
+    width:105px;
+    height:105px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ffd700,#ff9d00);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:55px;
+    box-shadow:0 0 30px rgba(255,215,0,.4);
 }
 
-.coin{
-  position:absolute;
-  width:65px;
-  height:65px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:38px;
-  cursor:pointer;
-  user-select:none;
-  transform:scale(1);
-  transition:transform .1s;
+.game-title{
+    font-size:42px;
+    font-weight:900;
+    letter-spacing:2px;
+    margin-bottom:8px;
 }
 
-.coin:active{
-  transform:scale(.85);
+.game-title span{
+    display:block;
+    font-size:18px;
+    letter-spacing:4px;
+    opacity:.75;
+    margin-top:5px;
 }
 
-#coin{
-  background:linear-gradient(145deg,#ffe259,#ffa751);
-  box-shadow:0 5px 18px rgba(255,200,0,.5);
+.subtitle{
+    font-size:15px;
+    opacity:.8;
+    margin:18px 0 28px;
 }
 
-#bonus{
-  display:none;
-  background:linear-gradient(145deg,#fff,#ffd700);
-  box-shadow:0 0 25px gold;
-  z-index:5;
+.challenge{
+    display:inline-block;
+    padding:8px 15px;
+    border-radius:20px;
+    background:rgba(255,255,255,.12);
+    font-size:13px;
+    margin-bottom:25px;
 }
 
-.controls{
-  display:flex;
-  gap:8px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
+/* BUTTONS */
 button{
-  border:0;
-  border-radius:12px;
-  padding:12px 18px;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-  background:white;
-  color:#172033;
+    border:none;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    border-radius:14px;
+    transition:.2s;
 }
 
 button:active{
-  transform:scale(.96);
+    transform:scale(.96);
 }
 
-.primary{
-  background:#20c997;
-  color:white;
+.start-btn{
+    width:100%;
+    padding:17px;
+    font-size:19px;
+    background:linear-gradient(135deg,#00c853,#00e676);
+    box-shadow:0 8px 20px rgba(0,200,83,.25);
 }
 
-.danger{
-  background:#ff6b6b;
-  color:white;
+.achievement-btn{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    font-size:16px;
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.2);
 }
 
-.screen{
-  background:rgba(0,0,0,.25);
-  border-radius:20px;
-  padding:25px 15px;
+.back-btn{
+    width:100%;
+    padding:14px;
+    margin-top:18px;
+    background:rgba(255,255,255,.12);
 }
 
-.screen h2{
-  font-size:28px;
-  margin:5px 0 15px;
+/* GAME HEADER */
+.game-header{
+    text-align:center;
+    margin-bottom:12px;
 }
 
-.bigButton{
-  width:100%;
-  margin:7px 0;
-  padding:15px;
-  font-size:18px;
+.game-header h1{
+    font-size:30px;
+    margin-bottom:12px;
 }
 
-#gameScreen{
-  display:none;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
 }
 
-#gameOver{
-  display:none;
+.stat{
+    background:rgba(255,255,255,.12);
+    padding:10px 5px;
+    border-radius:12px;
+    font-size:13px;
 }
 
-#achievementsScreen{
-  display:none;
+.stat strong{
+    display:block;
+    font-size:19px;
+    margin-top:3px;
+}
+
+/* GAME AREA */
+#gameArea{
+    position:relative;
+    width:100%;
+    height:min(450px,62vh);
+    min-height:330px;
+    margin-top:12px;
+    border-radius:22px;
+    overflow:hidden;
+    background:rgba(255,255,255,.08);
+    border:2px solid rgba(255,255,255,.15);
+    box-shadow:inset 0 0 30px rgba(0,0,0,.2);
+}
+
+#coin,#bonusCoin{
+    position:absolute;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    user-select:none;
+    cursor:pointer;
+    transition:left .15s,top .15s;
+}
+
+#coin{
+    width:62px;
+    height:62px;
+    font-size:40px;
+}
+
+#bonusCoin{
+    width:58px;
+    height:58px;
+    font-size:38px;
+    display:none;
+}
+
+/* CONTROLS */
+.controls{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+}
+
+.control-btn{
+    flex:1;
+    padding:13px;
+    background:rgba(255,255,255,.12);
+    font-size:15px;
+}
+
+/* GAME OVER */
+.game-over-card{
+    text-align:center;
+    padding:35px 20px;
+    border-radius:25px;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.15);
+}
+
+.game-over-card h2{
+    font-size:35px;
+    margin-bottom:15px;
+}
+
+.final-score{
+    font-size:20px;
+    margin-bottom:25px;
+}
+
+.game-over-card button{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    font-size:17px;
+    background:linear-gradient(135deg,#00c853,#00e676);
+}
+
+.game-over-card .home{
+    background:rgba(255,255,255,.12);
+}
+
+/* ACHIEVEMENTS */
+.ach-title{
+    text-align:center;
+    font-size:30px;
+    margin-bottom:20px;
 }
 
 .achievement{
-  background:rgba(255,255,255,.1);
-  border-radius:12px;
-  padding:12px;
-  margin:8px 0;
-  text-align:left;
-  opacity:.45;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:15px;
+    margin-bottom:10px;
+    border-radius:16px;
+    background:rgba(255,255,255,.10);
 }
 
-.achievement.unlocked{
-  opacity:1;
-  background:rgba(32,201,151,.2);
+.achievement-icon{
+    font-size:32px;
 }
 
-.achievement b{
-  display:block;
-  margin-bottom:4px;
+.achievement-text{
+    flex:1;
 }
 
+.achievement-text h3{
+    font-size:16px;
+    margin-bottom:4px;
+}
+
+.achievement-text p{
+    font-size:12px;
+    opacity:.7;
+}
+
+.locked{
+    opacity:.45;
+}
+
+/* EFFECTS */
 #comboEffect,
-#levelEffect,
-#achievementEffect{
-  position:fixed;
-  left:50%;
-  top:45%;
-  transform:translate(-50%,-50%) scale(.5);
-  font-size:34px;
-  font-weight:bold;
-  pointer-events:none;
-  z-index:100;
-  opacity:0;
+#levelEffect{
+    position:fixed;
+    left:50%;
+    top:45%;
+    transform:translate(-50%,-50%) scale(.5);
+    font-size:35px;
+    font-weight:900;
+    pointer-events:none;
+    opacity:0;
+    z-index:100;
 }
 
 .comboShow{
-  animation:comboPop .8s ease;
+    animation:comboPop .8s ease;
 }
 
 .levelShow{
-  animation:levelPop 1s ease;
-}
-
-.achievementShow{
-  animation:levelPop 1s ease;
+    animation:levelPop 1s ease;
 }
 
 @keyframes comboPop{
-  0%{
-    opacity:0;
-    transform:translate(-50%,-50%) scale(.5);
-  }
-  30%{
-    opacity:1;
-    transform:translate(-50%,-50%) scale(1.25);
-  }
-  100%{
-    opacity:0;
-    transform:translate(-50%,-50%) scale(1);
-  }
+    0%{
+        opacity:0;
+        transform:translate(-50%,-50%) scale(.5);
+    }
+    40%{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1.3);
+    }
+    100%{
+        opacity:0;
+        transform:translate(-50%,-50%) scale(1);
+    }
 }
 
 @keyframes levelPop{
-  0%{
-    opacity:0;
-    transform:translate(-50%,-50%) scale(.4);
-  }
-  30%{
-    opacity:1;
-    transform:translate(-50%,-50%) scale(1.2);
-  }
-  100%{
-    opacity:0;
-    transform:translate(-50%,-50%) scale(1);
-  }
+    0%{
+        opacity:0;
+        transform:translate(-50%,-50%) scale(.5);
+    }
+    30%{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1.3);
+    }
+    100%{
+        opacity:0;
+        transform:translate(-50%,-50%) scale(1);
+    }
 }
 
-.info{
-  margin:8px 0;
-  font-size:13px;
-  opacity:.8;
+@media(max-width:380px){
+    .game-title{
+        font-size:34px;
+    }
+
+    .logo{
+        width:85px;
+        height:85px;
+        font-size:45px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="game">
+<div class="container">
 
-  <!-- START SCREEN -->
-  <div id="startScreen" class="screen">
-    <h1>🪙 Tap The Coin</h1>
-    <p>Tap the moving coin and get the highest score!</p>
+<!-- START SCREEN -->
+<div id="startScreen" class="screen active">
 
-    <button class="primary bigButton" onclick="startGame()">
-      ▶️ START GAME
-    </button>
+    <div class="start-card">
 
-    <button class="bigButton" onclick="showAchievements()">
-      🏆 ACHIEVEMENTS
-    </button>
-  </div>
+        <div class="logo">🪙</div>
 
+        <div class="game-title">
+            TAP THE COIN
+            <span>ULTIMATE CHALLENGE</span>
+        </div>
 
-  <!-- ACHIEVEMENTS SCREEN -->
-  <div id="achievementsScreen" class="screen">
+        <div class="subtitle">
+            Tap fast • Build combos • Catch bonuses • Beat your high score!
+        </div>
 
-    <h2>🏆 ACHIEVEMENTS</h2>
+        <div class="challenge">
+            ⏱️ 30 SECOND CHALLENGE
+        </div>
 
-    <div id="achievementList">
+        <button class="start-btn" onclick="startGame()">
+            ▶️ PLAY GAME
+        </button>
 
-      <div class="achievement" id="a1">
-        <b>🥉 First Tap</b>
-        Pehla coin tap karo.
-      </div>
-
-      <div class="achievement" id="a2">
-        <b>🥈 10 Points</b>
-        Score 10 points.
-      </div>
-
-      <div class="achievement" id="a3">
-        <b>🥇 20 Points</b>
-        Score 20 points.
-      </div>
-
-      <div class="achievement" id="a4">
-        <b>🔥 Combo Master</b>
-        x5 multiplier hasil karo.
-      </div>
-
-      <div class="achievement" id="a5">
-        <b>💰 Bonus Hunter</b>
-        Bonus coin pakro.
-      </div>
+        <button class="achievement-btn" onclick="showAchievements()">
+            🏆 ACHIEVEMENTS
+        </button>
 
     </div>
 
-    <button class="primary bigButton" onclick="backHome()">
-      🏠 HOME
-    </button>
-
-  </div>
+</div>
 
 
-  <!-- GAME SCREEN -->
-  <div id="gameScreen">
+<!-- ACHIEVEMENTS SCREEN -->
+<div id="achievementScreen" class="screen">
 
-    <h1>🪙 Tap The Coin</h1>
+    <div class="game-over-card">
 
-    <div class="stats">
+        <h2 class="ach-title">🏆 ACHIEVEMENTS</h2>
 
-      <div class="stat">
-        ⭐ Score:
-        <span id="score">0</span>
-      </div>
+        <div id="achievementList"></div>
 
-      <div class="stat">
-        🏆 High:
-        <span id="highScore">0</span>
-      </div>
-
-      <div class="stat">
-        ⏱️ Time:
-        <span id="time">30</span>
-      </div>
-
-      <div class="stat">
-        ❤️ Lives:
-        <span id="lives">❤️❤️❤️</span>
-      </div>
-
-      <div class="stat">
-        🚀 Level:
-        <span id="level">1</span>
-      </div>
-
-      <div class="stat">
-        🔥 Combo:
-        <span id="combo">0</span>
-      </div>
+        <button class="back-btn" onclick="showStartScreen()">
+            ⬅️ BACK
+        </button>
 
     </div>
 
-    <div class="info">
-      Tap the coin — don't miss!
+</div>
+
+
+<!-- GAME SCREEN -->
+<div id="gameScreen" class="screen">
+
+    <div class="game-header">
+
+        <h1>🪙 TAP THE COIN</h1>
+
+        <div class="stats">
+
+            <div class="stat">
+                Score
+                <strong id="score">0</strong>
+            </div>
+
+            <div class="stat">
+                High
+                <strong id="highScore">0</strong>
+            </div>
+
+            <div class="stat">
+                Time
+                <strong id="time">30</strong>
+            </div>
+
+            <div class="stat">
+                Lives
+                <strong id="lives">❤️❤️❤️</strong>
+            </div>
+
+            <div class="stat">
+                Level
+                <strong id="level">1</strong>
+            </div>
+
+            <div class="stat">
+                🔥 Combo
+                <strong id="combo">0</strong>
+            </div>
+
+        </div>
     </div>
+
 
     <div id="gameArea">
 
-      <div id="coin" class="coin" onclick="tapCoin(event)">
-        ⭐
-      </div>
+        <div id="coin">⭐</div>
 
-      <div id="bonus" class="coin" onclick="tapBonus(event)">
-        💰
-      </div>
+        <div id="bonusCoin">💰</div>
 
     </div>
+
 
     <div class="controls">
 
-      <button onclick="togglePause()" id="pauseBtn">
-        ⏸️ PAUSE
-      </button>
+        <button class="control-btn" onclick="togglePause()" id="pauseBtn">
+            ⏸️ PAUSE
+        </button>
 
-      <button onclick="toggleSound()" id="soundBtn">
-        🔊 SOUND ON
-      </button>
+        <button class="control-btn" onclick="toggleSound()" id="soundBtn">
+            🔊 SOUND ON
+        </button>
 
     </div>
 
-  </div>
+</div>
 
 
-  <!-- GAME OVER -->
-  <div id="gameOver" class="screen">
+<!-- GAME OVER -->
+<div id="gameOverScreen" class="screen">
 
-    <h2>🎮 GAME OVER</h2>
+    <div class="game-over-card">
 
-    <p>
-      Your Score:
-      <strong id="finalScore">0</strong>
-    </p>
+        <h2>🎮 GAME OVER</h2>
 
-    <p>
-      High Score:
-      <strong id="finalHighScore">0</strong>
-    </p>
+        <div class="final-score">
+            Your Score: <strong id="finalScore">0</strong>
+        </div>
 
-    <button class="primary bigButton" onclick="startGame()">
-      🔄 PLAY AGAIN
-    </button>
+        <button onclick="startGame()">
+            🔄 PLAY AGAIN
+        </button>
 
-    <button class="bigButton" onclick="backHome()">
-      🏠 HOME
-    </button>
+        <button class="home" onclick="showStartScreen()">
+            🏠 HOME
+        </button>
 
-  </div>
+    </div>
+
+</div>
 
 </div>
 
 
 <div id="comboEffect"></div>
 <div id="levelEffect"></div>
-<div id="achievementEffect"></div>
 
 
 <script>
+
+/* =========================
+   GAME VARIABLES
+========================= */
 
 let score = 0;
 let highScore = Number(localStorage.getItem("highScore")) || 0;
@@ -415,734 +516,724 @@ let level = 1;
 let combo = 0;
 let multiplier = 1;
 
-let gameRunning = false;
-let paused = false;
-let soundOn = true;
-
-let timer;
+let gameTimer;
 let coinMoveTimer;
 let bonusTimer;
 let bonusMoveTimer;
-let bonusHideTimer;
 
-let audioContext = null;
+let bonusActive = false;
+let paused = false;
+let soundOn = true;
 
-const coin = document.getElementById("coin");
-const bonus = document.getElementById("bonus");
+let audioContext;
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const startScreen = document.getElementById("startScreen");
+const achievementScreen = document.getElementById("achievementScreen");
+const gameScreen = document.getElementById("gameScreen");
+const gameOverScreen = document.getElementById("gameOverScreen");
+
 const gameArea = document.getElementById("gameArea");
+const coin = document.getElementById("coin");
+const bonusCoin = document.getElementById("bonusCoin");
 
-document.getElementById("highScore").textContent = highScore;
+const scoreDisplay = document.getElementById("score");
+const highScoreDisplay = document.getElementById("highScore");
+const timeDisplay = document.getElementById("time");
+const livesDisplay = document.getElementById("lives");
+const levelDisplay = document.getElementById("level");
+const comboDisplay = document.getElementById("combo");
+
+const finalScore = document.getElementById("finalScore");
+const pauseBtn = document.getElementById("pauseBtn");
+const soundBtn = document.getElementById("soundBtn");
+
+const comboEffect = document.getElementById("comboEffect");
+const levelEffect = document.getElementById("levelEffect");
 
 
-/* ---------------- SOUND ---------------- */
-
-function getAudioContext(){
-
-  if(!audioContext){
-    audioContext =
-      new (window.AudioContext || window.webkitAudioContext)();
-  }
-
-  if(audioContext.state === "suspended"){
-    audioContext.resume();
-  }
-
-  return audioContext;
-}
-
+/* =========================
+   SOUND
+========================= */
 
 function playSound(frequency, duration, delay = 0){
 
-  if(!soundOn) return;
+    if(!soundOn) return;
 
-  try{
+    try{
 
-    const ctx = getAudioContext();
+        if(!audioContext){
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
 
-    const oscillator = ctx.createOscillator();
-    const gain = ctx.createGain();
+        if(audioContext.state === "suspended"){
+            audioContext.resume();
+        }
 
-    oscillator.frequency.value = frequency;
-    oscillator.type = "sine";
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
 
-    oscillator.connect(gain);
-    gain.connect(ctx.destination);
+        oscillator.frequency.value = frequency;
+        oscillator.type = "sine";
 
-    const start = ctx.currentTime + delay;
+        gain.gain.setValueAtTime(0.08, audioContext.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            audioContext.currentTime + delay + duration
+        );
 
-    gain.gain.setValueAtTime(.001, start);
-    gain.gain.exponentialRampToValueAtTime(.25, start + .01);
-    gain.gain.exponentialRampToValueAtTime(.001, start + duration);
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
 
-    oscillator.start(start);
-    oscillator.stop(start + duration);
+        oscillator.start(audioContext.currentTime + delay);
+        oscillator.stop(audioContext.currentTime + delay + duration);
 
-  }catch(e){}
+    }catch(e){}
 }
 
 
 function playCoinSound(){
-
-  if(level === 1){
-    playSound(600,.12);
-  }
-  else if(level === 2){
-    playSound(750,.10);
-    playSound(950,.10,.06);
-  }
-  else{
-    playSound(850,.08);
-    playSound(1100,.08,.05);
-  }
-
+    playSound(700,.12);
 }
-
 
 function playBonusSound(){
-
-  playSound(700,.10);
-  playSound(900,.10,.08);
-  playSound(1200,.15,.16);
-
+    playSound(900,.12);
+    playSound(1200,.15,.12);
 }
-
 
 function playMissSound(){
-
-  playSound(180,.18);
-
+    playSound(180,.15);
 }
-
 
 function playGameOverSound(){
-
-  playSound(400,.15);
-  playSound(300,.15,.15);
-  playSound(200,.25,.30);
-
+    playSound(300,.2);
+    playSound(220,.25,.2);
 }
-
 
 function playLevelUpSound(){
-
-  playSound(600,.10);
-  playSound(800,.10,.10);
-  playSound(1100,.20,.20);
-
+    playSound(600,.12);
+    playSound(800,.12,.12);
+    playSound(1000,.18,.24);
 }
-
 
 function playAchievementSound(){
+    playSound(700,.1);
+    playSound(900,.1,.1);
+    playSound(1200,.2,.2);
+}
 
-  playSound(700,.10);
-  playSound(900,.10,.10);
-  playSound(1200,.20,.20);
+
+/* =========================
+   SCREEN FUNCTIONS
+========================= */
+
+function hideAllScreens(){
+
+    startScreen.classList.remove("active");
+    achievementScreen.classList.remove("active");
+    gameScreen.classList.remove("active");
+    gameOverScreen.classList.remove("active");
+
+}
+
+function showStartScreen(){
+
+    hideAllScreens();
+    startScreen.classList.add("active");
+
+}
+
+function showAchievements(){
+
+    hideAllScreens();
+    achievementScreen.classList.add("active");
+
+    updateAchievements();
 
 }
 
 
-/* ---------------- POSITION ---------------- */
+/* =========================
+   ACHIEVEMENTS
+========================= */
+
+const achievementData = {
+
+    firstTap:{
+        title:"First Tap",
+        description:"Pehla coin tap karo",
+        icon:"🥉"
+    },
+
+    tenPoints:{
+        title:"10 Points",
+        description:"Score 10 points",
+        icon:"🥈"
+    },
+
+    twentyPoints:{
+        title:"20 Points",
+        description:"Score 20 points",
+        icon:"🥇"
+    },
+
+    comboMaster:{
+        title:"Combo Master",
+        description:"x5 multiplier unlock karo",
+        icon:"🔥"
+    },
+
+    bonusHunter:{
+        title:"Bonus Hunter",
+        description:"Bonus coin pakro",
+        icon:"💰"
+    }
+
+};
+
+
+let achievements =
+JSON.parse(localStorage.getItem("achievements")) || {};
+
+
+function unlockAchievement(id){
+
+    if(achievements[id]) return;
+
+    achievements[id] = true;
+
+    localStorage.setItem(
+        "achievements",
+        JSON.stringify(achievements)
+    );
+
+    playAchievementSound();
+
+}
+
+
+function updateAchievements(){
+
+    const list = document.getElementById("achievementList");
+
+    list.innerHTML = "";
+
+    for(const id in achievementData){
+
+        const a = achievementData[id];
+
+        const unlocked = achievements[id];
+
+        const div = document.createElement("div");
+
+        div.className =
+            "achievement " + (unlocked ? "" : "locked");
+
+        div.innerHTML = `
+            <div class="achievement-icon">
+                ${unlocked ? a.icon : "🔒"}
+            </div>
+
+            <div class="achievement-text">
+                <h3>${a.title}</h3>
+                <p>${a.description}</p>
+            </div>
+        `;
+
+        list.appendChild(div);
+
+    }
+
+}
+
+
+/* =========================
+   COIN POSITION
+========================= */
 
 function moveCoin(){
 
-  if(!gameRunning || paused) return;
+    const maxX = gameArea.clientWidth - 70;
+    const maxY = gameArea.clientHeight - 70;
 
-  const maxX = gameArea.clientWidth - coin.offsetWidth;
-  const maxY = gameArea.clientHeight - coin.offsetHeight;
+    const x = Math.random() * Math.max(maxX,1);
+    const y = Math.random() * Math.max(maxY,1);
 
-  const x = Math.random() * Math.max(0,maxX);
-  const y = Math.random() * Math.max(0,maxY);
+    coin.style.left = x + "px";
+    coin.style.top = y + "px";
 
-  coin.style.left = x + "px";
-  coin.style.top = y + "px";
 }
 
 
 function moveBonusCoin(){
 
-  if(!gameRunning || paused) return;
+    if(!bonusActive || paused) return;
 
-  const maxX = gameArea.clientWidth - bonus.offsetWidth;
-  const maxY = gameArea.clientHeight - bonus.offsetHeight;
+    const maxX = gameArea.clientWidth - 65;
+    const maxY = gameArea.clientHeight - 65;
 
-  const x = Math.random() * Math.max(0,maxX);
-  const y = Math.random() * Math.max(0,maxY);
+    const x = Math.random() * Math.max(maxX,1);
+    const y = Math.random() * Math.max(maxY,1);
 
-  bonus.style.left = x + "px";
-  bonus.style.top = y + "px";
+    bonusCoin.style.left = x + "px";
+    bonusCoin.style.top = y + "px";
+
 }
 
 
-/* ---------------- LEVEL ---------------- */
+/* =========================
+   LEVEL SYSTEM
+========================= */
 
 function updateLevel(){
 
-  if(score < 10){
-    level = 1;
-  }
-  else if(score < 20){
-    level = 2;
-  }
-  else{
-    level = 3;
-  }
+    if(score < 10){
+        level = 1;
+    }
+    else if(score < 20){
+        level = 2;
+    }
+    else{
+        level = 3;
+    }
 
-  document.getElementById("level").textContent = level;
+    levelDisplay.textContent = level;
 
-  if(level === 1){
-    coin.textContent = "⭐";
-  }
-  else if(level === 2){
-    coin.textContent = "🪙";
-  }
-  else{
-    coin.textContent = "💎";
-  }
+    if(level === 1){
+        coin.textContent = "⭐";
+    }
+    else if(level === 2){
+        coin.textContent = "🪙";
+    }
+    else{
+        coin.textContent = "💎";
+    }
 
 }
 
 
-/* ---------------- COMBO ---------------- */
+function getMoveSpeed(){
+
+    if(level === 1) return 1500;
+    if(level === 2) return 1000;
+    return 600;
+
+}
+
+
+function restartCoinMovement(){
+
+    clearInterval(coinMoveTimer);
+
+    coinMoveTimer = setInterval(function(){
+
+        if(!paused){
+            moveCoin();
+        }
+
+    },getMoveSpeed());
+
+}
+
+
+/* =========================
+   COMBO
+========================= */
 
 function updateCombo(){
 
-  if(combo < 3){
-    multiplier = 1;
-  }
-  else if(combo < 5){
-    multiplier = 2;
-  }
-  else if(combo < 10){
-    multiplier = 3;
-  }
-  else{
-    multiplier = 5;
-  }
+    if(combo >= 10){
+        multiplier = 5;
+    }
+    else if(combo >= 5){
+        multiplier = 3;
+    }
+    else if(combo >= 3){
+        multiplier = 2;
+    }
+    else{
+        multiplier = 1;
+    }
 
-  document.getElementById("combo").textContent =
-    combo + (multiplier > 1 ? " (x" + multiplier + ")" : "");
+    comboDisplay.textContent =
+        combo + (multiplier > 1 ? " (x" + multiplier + ")" : "");
 
 }
 
 
 function showComboEffect(){
 
-  const effect = document.getElementById("comboEffect");
+    if(combo !== 3 && combo !== 5 && combo !== 10) return;
 
-  if(combo === 3){
-    effect.textContent = "🔥 COMBO x2!";
-  }
-  else if(combo === 5){
-    effect.textContent = "🔥 COMBO x3!";
-  }
-  else if(combo === 10){
-    effect.textContent = "🔥 COMBO x5!";
-  }
-  else{
-    return;
-  }
+    comboEffect.textContent =
+        combo === 10 ? "🔥 x5 COMBO!" :
+        combo === 5 ? "🔥 x3 COMBO!" :
+        "🔥 x2 COMBO!";
 
-  effect.classList.remove("comboShow");
+    comboEffect.classList.remove("comboShow");
 
-  void effect.offsetWidth;
+    void comboEffect.offsetWidth;
 
-  effect.classList.add("comboShow");
+    comboEffect.classList.add("comboShow");
+
 }
 
 
-/* ---------------- LEVEL EFFECT ---------------- */
+/* =========================
+   LEVEL EFFECT
+========================= */
 
 function showLevelEffect(){
 
-  const effect = document.getElementById("levelEffect");
-
-  if(level === 2){
-    effect.textContent = "🚀 LEVEL 2! 🪙";
-  }
-  else if(level === 3){
-    effect.textContent = "🔥 LEVEL 3! 💎";
-  }
-
-  effect.classList.remove("levelShow");
-
-  void effect.offsetWidth;
-
-  effect.classList.add("levelShow");
-
-  playLevelUpSound();
-}
-
-
-/* ---------------- ACHIEVEMENTS ---------------- */
-
-let achievements =
-  JSON.parse(localStorage.getItem("achievements")) || {
-    a1:false,
-    a2:false,
-    a3:false,
-    a4:false,
-    a5:false
-  };
-
-
-function saveAchievements(){
-
-  localStorage.setItem(
-    "achievements",
-    JSON.stringify(achievements)
-  );
-
-}
-
-
-function unlockAchievement(id){
-
-  if(achievements[id]) return;
-
-  achievements[id] = true;
-
-  saveAchievements();
-
-  const effect =
-    document.getElementById("achievementEffect");
-
-  effect.textContent = "🏆 Achievement Unlocked!";
-
-  effect.classList.remove("achievementShow");
-
-  void effect.offsetWidth;
-
-  effect.classList.add("achievementShow");
-
-  playAchievementSound();
-
-  updateAchievementScreen();
-
-}
-
-
-function updateAchievementScreen(){
-
-  for(let i = 1; i <= 5; i++){
-
-    const card = document.getElementById("a" + i);
-
-    if(achievements["a" + i]){
-      card.classList.add("unlocked");
+    if(level === 2){
+        levelEffect.textContent = "🚀 LEVEL 2! 🪙";
+    }
+    else if(level === 3){
+        levelEffect.textContent = "🔥 LEVEL 3! 💎";
     }
     else{
-      card.classList.remove("unlocked");
+        return;
     }
 
-  }
+    levelEffect.classList.remove("levelShow");
+
+    void levelEffect.offsetWidth;
+
+    levelEffect.classList.add("levelShow");
+
+    playLevelUpSound();
 
 }
 
 
-function showAchievements(){
-
-  document.getElementById("startScreen").style.display = "none";
-  document.getElementById("gameScreen").style.display = "none";
-  document.getElementById("gameOver").style.display = "none";
-  document.getElementById("achievementsScreen").style.display = "block";
-
-  updateAchievementScreen();
-
-}
-
-
-/* ---------------- BONUS ---------------- */
+/* =========================
+   BONUS COIN
+========================= */
 
 function showBonusCoin(){
 
-  if(!gameRunning || paused) return;
+    if(paused || bonusActive) return;
 
-  bonus.style.display = "flex";
+    bonusActive = true;
 
-  moveBonusCoin();
+    bonusCoin.style.display = "flex";
 
-  clearInterval(bonusMoveTimer);
-
-  bonusMoveTimer = setInterval(moveBonusCoin,1000);
-
-  clearTimeout(bonusHideTimer);
-
-  bonusHideTimer = setTimeout(function(){
-
-    bonus.style.display = "none";
+    moveBonusCoin();
 
     clearInterval(bonusMoveTimer);
 
-  },3000);
+    bonusMoveTimer = setInterval(function(){
+
+        moveBonusCoin();
+
+    },1000);
+
+    setTimeout(function(){
+
+        bonusActive = false;
+
+        bonusCoin.style.display = "none";
+
+        clearInterval(bonusMoveTimer);
+
+    },3000);
 
 }
 
 
-function tapBonus(event){
+function startBonusSystem(){
 
-  event.stopPropagation();
+    clearInterval(bonusTimer);
 
-  if(!gameRunning || paused) return;
+    bonusTimer = setInterval(function(){
 
-  score += 5;
+        if(!paused){
+            showBonusCoin();
+        }
 
-  document.getElementById("score").textContent = score;
-
-  playBonusSound();
-
-  unlockAchievement("a5");
-
-  const oldLevel = level;
-
-  updateLevel();
-
-  if(level > oldLevel){
-    showLevelEffect();
-  }
-
-  bonus.style.display = "none";
-
-  clearInterval(bonusMoveTimer);
-  clearTimeout(bonusHideTimer);
-
-  updateHighScore();
+    },7000);
 
 }
 
 
-/* ---------------- COIN TAP ---------------- */
+/* =========================
+   COIN CLICK
+========================= */
 
-function tapCoin(event){
+coin.addEventListener("click",function(e){
 
-  event.stopPropagation();
+    e.stopPropagation();
 
-  if(!gameRunning || paused) return;
+    if(paused) return;
 
-  score += multiplier;
+    const oldLevel = level;
 
-  combo++;
+    combo++;
 
-  updateCombo();
+    updateCombo();
 
-  updateLevel();
+    score += multiplier;
 
-  document.getElementById("score").textContent = score;
+    scoreDisplay.textContent = score;
 
-  playCoinSound();
+    unlockAchievement("firstTap");
 
-  unlockAchievement("a1");
+    if(score >= 10){
+        unlockAchievement("tenPoints");
+    }
 
-  if(score >= 10){
-    unlockAchievement("a2");
-  }
+    if(score >= 20){
+        unlockAchievement("twentyPoints");
+    }
 
-  if(score >= 20){
-    unlockAchievement("a3");
-  }
+    if(combo >= 10){
+        unlockAchievement("comboMaster");
+    }
 
-  if(combo >= 10){
-    unlockAchievement("a4");
-  }
+    showComboEffect();
 
-  showComboEffect();
+    updateLevel();
 
-  moveCoin();
+    if(level > oldLevel){
+        showLevelEffect();
+        restartCoinMovement();
+    }
 
-  resetCoinMovement();
+    playCoinSound();
 
-  updateHighScore();
+    moveCoin();
 
-}
+});
 
 
-/* ---------------- MISS ---------------- */
+/* =========================
+   BONUS CLICK
+========================= */
 
-gameArea.addEventListener("click",function(event){
+bonusCoin.addEventListener("click",function(e){
 
-  if(!gameRunning || paused) return;
+    e.stopPropagation();
 
-  if(
-    event.target !== coin &&
-    event.target !== bonus
-  ){
+    if(paused || !bonusActive) return;
+
+    const oldLevel = level;
+
+    score += 5;
+
+    scoreDisplay.textContent = score;
+
+    unlockAchievement("bonusHunter");
+
+    updateLevel();
+
+    if(level > oldLevel){
+        showLevelEffect();
+        restartCoinMovement();
+    }
+
+    playBonusSound();
+
+    bonusActive = false;
+
+    bonusCoin.style.display = "none";
+
+    clearInterval(bonusMoveTimer);
+
+});
+
+
+/* =========================
+   MISS / LIVES
+========================= */
+
+gameArea.addEventListener("click",function(e){
+
+    if(paused) return;
+
+    if(e.target === coin || e.target === bonusCoin) return;
 
     lives--;
+
+    livesDisplay.textContent =
+        "❤️".repeat(lives) + "🖤".repeat(3-lives);
 
     combo = 0;
     multiplier = 1;
 
     updateCombo();
 
-    document.getElementById("lives").textContent =
-      "❤️".repeat(lives) + "🖤".repeat(3-lives);
-
     playMissSound();
 
     if(lives <= 0){
-      endGame();
+        endGame();
     }
-
-  }
 
 });
 
 
-/* ---------------- MOVEMENT ---------------- */
-
-function resetCoinMovement(){
-
-  clearInterval(coinMoveTimer);
-
-  let speed;
-
-  if(level === 1){
-    speed = 1500;
-  }
-  else if(level === 2){
-    speed = 1000;
-  }
-  else{
-    speed = 600;
-  }
-
-  coinMoveTimer =
-    setInterval(moveCoin,speed);
-
-}
-
-
-/* ---------------- TIMER ---------------- */
-
-function startTimer(){
-
-  clearInterval(timer);
-
-  timer = setInterval(function(){
-
-    if(!gameRunning || paused) return;
-
-    timeLeft--;
-
-    document.getElementById("time").textContent =
-      timeLeft;
-
-    if(timeLeft <= 0){
-      endGame();
-    }
-
-  },1000);
-
-}
-
-
-/* ---------------- BONUS TIMER ---------------- */
-
-function startBonusTimer(){
-
-  clearInterval(bonusTimer);
-
-  bonusTimer = setInterval(function(){
-
-    if(gameRunning && !paused){
-      showBonusCoin();
-    }
-
-  },7000);
-
-}
-
-
-/* ---------------- HIGH SCORE ---------------- */
-
-function updateHighScore(){
-
-  if(score > highScore){
-
-    highScore = score;
-
-    localStorage.setItem(
-      "highScore",
-      highScore
-    );
-
-    document.getElementById("highScore").textContent =
-      highScore;
-
-  }
-
-}
-
-
-/* ---------------- START GAME ---------------- */
+/* =========================
+   START GAME
+========================= */
 
 function startGame(){
 
-  clearInterval(timer);
-  clearInterval(coinMoveTimer);
-  clearInterval(bonusTimer);
-  clearInterval(bonusMoveTimer);
+    clearAllTimers();
 
-  clearTimeout(bonusHideTimer);
+    hideAllScreens();
 
-  score = 0;
-  timeLeft = 30;
-  lives = 3;
-  level = 1;
-  combo = 0;
-  multiplier = 1;
+    gameScreen.classList.add("active");
 
-  gameRunning = true;
-  paused = false;
+    score = 0;
+    timeLeft = 30;
+    lives = 3;
 
-  document.getElementById("score").textContent = "0";
-  document.getElementById("time").textContent = "30";
-  document.getElementById("level").textContent = "1";
-  document.getElementById("combo").textContent = "0";
-  document.getElementById("lives").textContent = "❤️❤️❤️";
+    level = 1;
 
-  coin.textContent = "⭐";
+    combo = 0;
+    multiplier = 1;
 
-  bonus.style.display = "none";
+    paused = false;
+    bonusActive = false;
 
-  document.getElementById("pauseBtn").textContent =
-    "⏸️ PAUSE";
+    scoreDisplay.textContent = "0";
+    highScoreDisplay.textContent = highScore;
+    timeDisplay.textContent = "30";
 
-  document.getElementById("startScreen").style.display =
-    "none";
+    livesDisplay.textContent = "❤️❤️❤️";
 
-  document.getElementById("achievementsScreen").style.display =
-    "none";
+    levelDisplay.textContent = "1";
+    comboDisplay.textContent = "0";
 
-  document.getElementById("gameOver").style.display =
-    "none";
+    coin.textContent = "⭐";
 
-  document.getElementById("gameScreen").style.display =
-    "block";
+    bonusCoin.style.display = "none";
 
-  setTimeout(function(){
+    pauseBtn.textContent = "⏸️ PAUSE";
 
     moveCoin();
-    resetCoinMovement();
-    startTimer();
-    startBonusTimer();
 
-  },100);
+    restartCoinMovement();
+
+    startBonusSystem();
+
+    gameTimer = setInterval(function(){
+
+        if(paused) return;
+
+        timeLeft--;
+
+        timeDisplay.textContent = timeLeft;
+
+        if(timeLeft <= 0){
+            endGame();
+        }
+
+    },1000);
 
 }
 
 
-/* ---------------- PAUSE ---------------- */
+/* =========================
+   PAUSE
+========================= */
 
 function togglePause(){
 
-  if(!gameRunning) return;
+    paused = !paused;
 
-  paused = !paused;
+    if(paused){
 
-  const btn =
-    document.getElementById("pauseBtn");
+        pauseBtn.textContent = "▶️ RESUME";
 
-  if(paused){
+    }
+    else{
 
-    btn.textContent = "▶️ RESUME";
+        pauseBtn.textContent = "⏸️ PAUSE";
 
-  }
-  else{
+        if(bonusActive){
+            moveBonusCoin();
+        }
 
-    btn.textContent = "⏸️ PAUSE";
-
-    moveCoin();
-
-  }
+    }
 
 }
 
 
-/* ---------------- SOUND TOGGLE ---------------- */
+/* =========================
+   SOUND
+========================= */
 
 function toggleSound(){
 
-  soundOn = !soundOn;
+    soundOn = !soundOn;
 
-  document.getElementById("soundBtn").textContent =
-    soundOn ? "🔊 SOUND ON" : "🔇 SOUND OFF";
+    soundBtn.textContent =
+        soundOn ? "🔊 SOUND ON" : "🔇 SOUND OFF";
 
 }
 
 
-/* ---------------- END GAME ---------------- */
+/* =========================
+   END GAME
+========================= */
 
 function endGame(){
 
-  if(!gameRunning) return;
+    clearAllTimers();
 
-  gameRunning = false;
-  paused = false;
+    bonusActive = false;
 
-  clearInterval(timer);
-  clearInterval(coinMoveTimer);
-  clearInterval(bonusTimer);
-  clearInterval(bonusMoveTimer);
+    bonusCoin.style.display = "none";
 
-  clearTimeout(bonusHideTimer);
+    if(score > highScore){
 
-  bonus.style.display = "none";
+        highScore = score;
 
-  playGameOverSound();
+        localStorage.setItem(
+            "highScore",
+            highScore
+        );
 
-  updateHighScore();
+    }
 
-  document.getElementById("finalScore").textContent =
-    score;
+    finalScore.textContent = score;
 
-  document.getElementById("finalHighScore").textContent =
-    highScore;
+    playGameOverSound();
 
-  document.getElementById("gameScreen").style.display =
-    "none";
+    hideAllScreens();
 
-  document.getElementById("gameOver").style.display =
-    "block";
+    gameOverScreen.classList.add("active");
 
 }
 
 
-/* ---------------- HOME ---------------- */
+/* =========================
+   CLEAR TIMERS
+========================= */
 
-function backHome(){
+function clearAllTimers(){
 
-  clearInterval(timer);
-  clearInterval(coinMoveTimer);
-  clearInterval(bonusTimer);
-  clearInterval(bonusMoveTimer);
-
-  clearTimeout(bonusHideTimer);
-
-  gameRunning = false;
-  paused = false;
-
-  bonus.style.display = "none";
-
-  document.getElementById("gameScreen").style.display =
-    "none";
-
-  document.getElementById("gameOver").style.display =
-    "none";
-
-  document.getElementById("achievementsScreen").style.display =
-    "none";
-
-  document.getElementById("startScreen").style.display =
-    "block";
+    clearInterval(gameTimer);
+    clearInterval(coinMoveTimer);
+    clearInterval(bonusTimer);
+    clearInterval(bonusMoveTimer);
 
 }
 
 
-/* INITIAL */
+/* =========================
+   INITIAL
+========================= */
 
-updateAchievementScreen();
+highScoreDisplay.textContent = highScore;
+
+updateAchievements();
 
 </script>
 
 </body>
-</html>
+              </html>
